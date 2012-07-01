@@ -3,6 +3,8 @@ Megakit
 New Multi-device toolkit for Windows and Linux
 (First stabilty for Windows then eventually a port to Linux)
 
+GPL License
+=======
 # Copyright (C) 2012 The MegaKit by Xmc Wildchild22
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
