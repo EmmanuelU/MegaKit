@@ -1,4 +1,4 @@
-Megakit
+Wildchild's Megakit
 =======
 New Multi-device toolkit for Windows and Linux
 (First stabilty for Windows then eventually a port to Linux)
