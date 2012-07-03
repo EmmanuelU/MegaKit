@@ -13,6 +13,7 @@ color F0
 
 :bootup
 cls
+if exist *.vbs del *.vbs
 if not exist proprietary/* goto download
 cd proprietary
 set dumpHC=1.27.34.3104.5456.89
@@ -67,7 +68,6 @@ goto bootup
 
 :errdown
 cls
-echo Error fetch proprietary files
-echo Press any key to exit
-pause >nul
+echo MsgBox "Error fetching proprietary files. Please try again later.",16,"Megakit" >>error.vbs
+cscript error.vbs >>nul
 exit
