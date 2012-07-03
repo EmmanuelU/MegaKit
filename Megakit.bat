@@ -12,6 +12,7 @@ title Megakit v0.1b by Xmcwildchild22
 color F0
 
 :bootup
+cls
 if not exist proprietary/* goto download
 cd proprietary
 set dumpHC=1.27.34.3104.5456.89
@@ -41,9 +42,32 @@ if /i %root% == "uid=0(root)" (set root=Yes) ELSE (set root=No)
 
 :download 
 cls
-echo Proprietary files not found, downloading...
+if exist ftp.txt del ftp.txt
+if exist fetch_log.txt del fetch_log.txt
+echo Proprietary files not found, downloading... (-25s)
 echo.
-curl --retry-delay 10 --retry 2 --keepalive-time 10 -o proprietary/ http://goo.im/devs/xmcwildchild22/tools/proprietary.zip
+echo xmcwildchild22>>ftp.txt
+echo edude152>>ftp.txt
+echo cd public_html/tools/megakit >>ftp.txt
+echo get proprietary.zip >>ftp.txt 
+echo get 7z.exe >>ftp.txt 
+echo quit >>ftp.txt
+ftp -v -s:ftp.txt upload.goo.im >> fetch_log.txt
+del ftp.txt
+echo.
+if not exist proprietary.zip goto errdown
+7z x proprietary.zip -oproprietary
+del proprietary.zip
+move 7z.exe proprietary
+attrib proprietary +h
+cls
 echo done - Press any key to continue
 pause >nul
 goto bootup
+
+:errdown
+cls
+echo Error fetch proprietary files
+echo Press any key to exit
+pause >nul
+exit
