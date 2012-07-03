@@ -12,34 +12,50 @@ title Megakit v0.1b by Xmcwildchild22
 color F0
 
 :bootup
+set rom=N/A
 cls
 if exist *.vbs del *.vbs
+if exist *.txt del *.txt
 if not exist proprietary/* goto download
 cd proprietary
 set dumpHC=1.27.34.3104.5456.89
 if %dumpHC%==nul (goto Ureallydum4real)
-echo. ==========================================================
-echo *                       PHONE INFO                       *
-echo *--------------------------------------------------------*
-echo *   Please plug in your phone to charge only             *
-echo *--------------------------------------------------------*
-echo *   Turn on USB debugging                                * 
-echo *--------------------------------------------------------*
-echo *   Turn off Fastboot in Settings/applications           *
-echo *--------------------------------------------------------*
-echo **********************************************************
+echo.*=============================================================================*
+echo *                             Device Connection                               *
+echo *-----------------------------------------------------------------------------*
+echo *                   Please plug in your phone to charge only                  *
+echo *-----------------------------------------------------------------------------*
+echo *                           Turn on USB debugging                             * 
+echo *-----------------------------------------------------------------------------*
+echo *                 Turn off Fastboot in Settings/applications                  *
+echo *-----------------------------------------------------------------------------*
+echo *                                                                             *
+echo *=============================================================================*
+echo.
+echo Awaiting device connection...
 adb kill-server >nul
 adb start-server >nul
 adb wait-for-device
 echo --------------
-echo Device found....
-::Rom Detection
+echo Device found, debugging....
+for /f "tokens=*" %%a in ('adb shell getprop ro.product.model') do ( set model="%%a" )
+for /f "tokens=*" %%a in ('adb get-serialno') do ( set serial="%%a" )
+for /f "tokens=*" %%a in ('adb shell getprop ro.modversion') do ( set rom="%%a" )
 for /f "tokens=*" %%a in ('adb shell getprop ro.product.version') do ( set rom="%%a" )
-::Device Detection
-for /f "tokens=*" %%a in ('adb shell getprop ro.product.device') do ( set device="%%a" )
-::Root Detection
+for /f "tokens=* delims=" %%a in ('adb shell getprop ro.product.device') do ( set device="%%a" )
 for /f "tokens=1 delims=, " %%a in ('adb shell id') do ( set root="%%a" )
-if /i %root% == "uid=0(root)" (set root=Yes) ELSE (set root=No)
+if /i %root% == "uid=0(root)" (set rooted=Yes) ELSE (set rooted=No)
+echo.
+echo DEVICE=%device% >>../"%device%_board_info.txt"
+echo MODEL=%model% >>../"%device%_board_info.txt"
+echo SERIAL_#=%serial% >>../"%device%_board_info.txt"
+echo ROM=%rom% >>../"%device%_board_info.txt"
+echo ROOTED=%rooted% >>../"%device%_board_info.txt"
+echo.
+echo Device info fed to %device%_board_info.txt
+echo.
+pause
+goto menuselect
 
 :download 
 cls
