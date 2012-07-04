@@ -41,12 +41,12 @@ for /f "tokens=*" %%a in ('adb shell getprop ro.product.brand') do ( set brand="
 for /f "tokens=*" %%a in ('adb shell getprop ro.product.model') do ( set model="%%a" )
 for /f "tokens=*" %%a in ('adb get-serialno') do ( set serial="%%a" )
 for /f "tokens=*" %%a in ('adb shell getprop ro.modversion') do ( set rom="%%a" )
-if not defined rom set rom=N/A
-if not defined device goto errdevice
 for /f "tokens=*" %%a in ('adb shell getprop ro.product.version') do ( set rom="%%a" )
 for /f "tokens=* delims=" %%a in ('adb shell getprop ro.product.device') do ( set device="%%a" )
 for /f "tokens=1 delims=, " %%a in ('adb shell id') do ( set root="%%a" )
 if /i %root% == "uid=0(root)" (set rooted=Yes) ELSE (set rooted=No)
+if not defined rom set rom=N/A
+if not defined device goto errdevice
 echo.
 echo DEVICE=%device% >>../"%device%_board_info.txt"
 echo MODEL=%model% >>../"%device%_board_info.txt"
@@ -88,6 +88,7 @@ cls
 echo 
 echo Main Menu - %brand% %model% - Rooted is a %root% - Serial # %serial%
 echo ==========================================================================
+pause
 
 :errdown
 cls
