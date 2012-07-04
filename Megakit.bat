@@ -57,6 +57,7 @@ echo ROOTED=%rooted% >>../"%device%_board_info.txt"
 echo.
 echo Device info fed to %device%_board_info.txt
 echo.
+ping localhost -n 3 >nul
 goto menuselect
 
 :download 
@@ -84,10 +85,13 @@ goto bootup
 
 :menuselect
 cls
-echo 
-echo Main Menu - %brand% %model% - Rooted is a %root% - Serial # %serial%
+echo.
+echo Main Menu   Oh hai! I see you have a %model% 
+echo ==========================================================================
+echo ^| Rooted is %rooted% ^| Serial # is %serial% ^| Rom is %rom% ^|
 echo ==========================================================================
 pause
+goto menuselect
 
 :errdown
 cls
