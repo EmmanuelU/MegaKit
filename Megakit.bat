@@ -86,8 +86,8 @@ goto bootup
 :menuselect
 cls
 echo 
-echo Main Menu - %brand% %device%
-echo ==================================================================
+echo Main Menu - %brand% %model% - Rooted is a %root% - Serial # %serial%
+echo ==========================================================================
 
 :errdown
 cls
