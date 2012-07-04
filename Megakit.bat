@@ -25,9 +25,9 @@ echo *                             Device Connection                            
 echo *-----------------------------------------------------------------------------*
 echo *                   Please plug in your phone to charge only                  *
 echo *-----------------------------------------------------------------------------*
-echo *                           Turn on USB debugging                             * 
+echo *                    Turn off Fastboot (If on HTC Sense)                      *
 echo *-----------------------------------------------------------------------------*
-echo *                 Turn off Fastboot in Settings/applications                  *
+echo *                          Turn on USB Debugging                              *
 echo *-----------------------------------------------------------------------------*
 echo *                                                                             *
 echo *=============================================================================*
@@ -78,8 +78,6 @@ del proprietary.zip
 move 7z.exe proprietary
 attrib proprietary +h
 cls
-echo done - Press any key to continue
-pause >nul
 goto bootup
 
 :errdown
