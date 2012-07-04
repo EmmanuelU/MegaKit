@@ -57,7 +57,6 @@ echo ROOTED=%rooted% >>../"%device%_board_info.txt"
 echo.
 echo Device info fed to %device%_board_info.txt
 echo.
-pause
 goto menuselect
 
 :download 
