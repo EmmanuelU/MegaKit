@@ -10,6 +10,7 @@
 @echo off
 title Megakit v0.1b by Xmcwildchild22
 color F0
+set rom=N/A
 
 :bootup
 cls
@@ -30,8 +31,12 @@ echo *                    Turn off Fastboot (If on HTC Sense)                   
 echo *-----------------------------------------------------------------------------*
 echo *                          Turn on USB Debugging                              *
 echo *-----------------------------------------------------------------------------*
+echo *                  Make sure ADB is granted root (if on CM9)                  *
+echo *-----------------------------------------------------------------------------*
 echo *                                                                             *
 echo *=============================================================================*
+echo.
+echo If stuck for more then 30 seconds try unplugging and replugging or rebooting
 echo.
 echo Awaiting device connection...
 adb kill-server >nul
@@ -87,16 +92,22 @@ goto bootup
 
 :mainmenu
 cls
+if not defined rom set rom=N/A
+if %rom% == "" set rom=N/A
 mode con:cols=100 lines=40
+for /f "tokens=*" %%a in ('time /t') do ( set launchtime="%%a" )
+for /f "tokens=*" %%a in ('date /t') do ( set launchdate="%%a" )
 echo.
-echo  Main Menu ^|                       Megakit by Xmcwildchild22          %DATE% - %TIME%
+echo  Main Menu ^|                       Megakit by Xmcwildchild22     %launchdate% - %launchtime%
 echo ===================================================================================================
-echo.
 echo                              Oh hai %USERNAME%! I see you have a %model% 
 echo ===================================================================================================
 echo ^| Rooted is a %rooted% ^| Serial # is %serial% ^| Rom is %rom% ^| Brand is %brand% ^|
 echo ===================================================================================================
-pause
+echo.
+echo ^|          Developer Options     ^|          Beginner Options     ^|          Other Options     ^|
+echo ---------------------------------------------------------------------------------------------------
+set /p menu=
 goto mainmenu
 
 :errdown
