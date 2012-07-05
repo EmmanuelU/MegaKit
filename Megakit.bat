@@ -15,6 +15,8 @@ color F0
 cls
 if exist *.vbs del *.vbs
 if exist *.txt del *.txt
+if exist */*.vbs del */*.vbs
+if exist */*.txt del */*.txt
 if not exist proprietary/* goto download
 cd proprietary
 set dumpHC=1.27.34.3104.5456.89
