@@ -60,7 +60,7 @@ echo.
 echo Device info fed to %device%_board_info.txt
 echo.
 ping localhost -n 3 >nul
-goto menuselect
+goto mainmenu
 
 :download 
 cls
@@ -85,15 +85,19 @@ attrib proprietary +h
 cls
 goto bootup
 
-:menuselect
+:mainmenu
 cls
+mode con:cols=100 lines=40
 echo.
-echo Main Menu   Oh hai! I see you have a %model% 
-echo ==========================================================================
-echo ^| Rooted is %rooted% ^| Serial # is %serial% ^| Rom is %rom% ^|
-echo ==========================================================================
+echo  Main Menu ^|                       Megakit by Xmcwildchild22          %DATE% - %TIME%
+echo ===================================================================================================
+echo.
+echo                              Oh hai %USERNAME%! I see you have a %model% 
+echo ===================================================================================================
+echo ^| Rooted is a %rooted% ^| Serial # is %serial% ^| Rom is %rom% ^| Brand is %brand% ^|
+echo ===================================================================================================
 pause
-goto menuselect
+goto mainmenu
 
 :errdown
 cls
