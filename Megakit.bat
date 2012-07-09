@@ -50,9 +50,10 @@ for /f "tokens=*" %%a in ('adb get-serialno') do ( set serial="%%a" )
 for /f "tokens=*" %%a in ('adb shell getprop ro.modversion') do ( set rom="%%a" )
 for /f "tokens=*" %%a in ('adb shell getprop ro.product.version') do ( set rom="%%a" )
 for /f "tokens=* delims=" %%a in ('adb shell getprop ro.product.device') do ( set device="%%a" )
-for /f "tokens=1 delims=, " %%a in ('adb shell id') do ( set root="%%a" )
-if /i %root% == "uid=0(root)" (set rooted=Yes) ELSE (set rooted=No)
+::for /f "tokens=1 delims=, " %%a in ('adb shell su -c id | findstr "uid=0(root)"') do ( set root="%%a" )
+::if /i %root% == "uid=0(root)" (set rooted=Yes) ELSE (set rooted=No)
 if not defined rom set rom=N/A
+if not defined rooted set rooted=N/A
 if not defined device goto errdevice
 echo.
 echo DEVICE=%device% >>../"%device%_board_info.txt"
