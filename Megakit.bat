@@ -19,6 +19,27 @@ if exist *.txt del *.txt
 if exist */*.vbs del */*.vbs
 if exist */*.txt del */*.txt
 if not exist proprietary/* goto download
+cd %~dp0/proprietary
+for /f "tokens=*" %%a in ('type ver.txt') do ( set propver="%%a" )
+set propver=%propver:"=%
+cd ..
+echo Checking for updates to the proprietary files...
+echo xmcwildchild22>>ftp.txt
+echo edude152>>ftp.txt
+echo cd public_html/tools/megakit >>ftp.txt
+echo get proprietaryver.txt >>ftp.txt 
+echo quit >>ftp.txt
+ftp -v -s:ftp.txt upload.goo.im >> fetch_log.txt
+del ftp.txt
+for /f "tokens=*" %%a in ('type proprietaryver.txt') do ( set remotepropver="%%a" )
+set remotepropver=%remotepropver:"=%
+if %remotepropver% GTR %propver% goto updateprop
+del prop*.txt
+cls
+echo proprietary files are updated to the latest version
+ping localhost -n 2 >nul
+cls
+echo.
 cd proprietary
 set dumpHC=1.27.34.3104.5456.89
 if %dumpHC%==nul (goto Ureallydum4real)
@@ -49,11 +70,16 @@ for /f "tokens=*" %%a in ('adb shell getprop ro.product.model') do ( set model="
 for /f "tokens=*" %%a in ('adb get-serialno') do ( set serial="%%a" )
 for /f "tokens=*" %%a in ('adb shell getprop ro.modversion') do ( set rom="%%a" )
 for /f "tokens=*" %%a in ('adb shell getprop ro.product.version') do ( set rom="%%a" )
-for /f "tokens=* delims=" %%a in ('adb shell getprop ro.product.device') do ( set device="%%a" )
-::for /f "tokens=1 delims=, " %%a in ('adb shell su -c id | findstr "uid=0(root)"') do ( set root="%%a" )
-::if /i %root% == "uid=0(root)" (set rooted=Yes) ELSE (set rooted=No)
+for /f "tokens=*" %%a in ('adb shell getprop ro.product.device') do ( set device="%%a" )
+for /f "tokens=*" %%a in ('adb shell su -c id ^| find /I "uid=0"') do ( set rooted="%%a" )
+set brand=%brand:"=%
+set model=%model:"=%
+set serial=%serial:"=%
+set rom=%rom:"=%
+set device=%device:"=%
+if not defined rooted set rooted="No"
+set rooted=%rooted:"=%
 if not defined rom set rom=N/A
-if not defined rooted set rooted=N/A
 if not defined device goto errdevice
 echo.
 echo DEVICE=%device% >>../"%device%_board_info.txt"
@@ -72,7 +98,7 @@ goto mainmenu
 cls
 if exist ftp.txt del ftp.txt
 if exist fetch_log.txt del fetch_log.txt
-echo Proprietary files not found, downloading... (-25s)
+echo Downloading proprietary files... (-30s)
 echo.
 echo xmcwildchild22>>ftp.txt
 echo edude152>>ftp.txt
@@ -94,7 +120,6 @@ goto bootup
 :mainmenu
 cls
 if not defined rom set rom=N/A
-if %rom% == "" set rom=N/A
 mode con:cols=100 lines=40
 for /f "tokens=*" %%a in ('time /t') do ( set launchtime="%%a" )
 for /f "tokens=*" %%a in ('date /t') do ( set launchdate="%%a" )
@@ -122,3 +147,25 @@ cls
 echo MsgBox "Error retrieving device information",16,"Megakit" >>error.vbs
 cscript error.vbs >>nul
 exit
+
+:updateprop
+cls
+echo Updating to the latest proprietary files... (-30s)
+del /S /Q proprietary
+echo.
+echo xmcwildchild22>>ftp.txt
+echo edude152>>ftp.txt
+echo cd public_html/tools/megakit >>ftp.txt
+echo get proprietary.zip >>ftp.txt 
+echo get 7z.exe >>ftp.txt 
+echo quit >>ftp.txt
+ftp -v -s:ftp.txt upload.goo.im >> fetch_log.txt
+del ftp.txt
+echo.
+if not exist proprietary.zip goto errdown
+7z x proprietary.zip -oproprietary
+del proprietary.zip
+move 7z.exe proprietary
+attrib proprietary +h
+cls
+goto bootup
