@@ -77,7 +77,7 @@ set model=%model:"=%
 set serial=%serial:"=%
 set rom=%rom:"=%
 set device=%device:"=%
-if not defined rooted set rooted="No"
+if not defined rooted set rooted="No" ELSE set rooted="Yes"
 set rooted=%rooted:"=%
 if not defined rom set rom=N/A
 if not defined device goto errdevice
